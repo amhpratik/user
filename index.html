@@ -9,6 +9,7 @@
             margin: 0;
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
+            padding-bottom: 200px;
         }
         .user-info {
             position: fixed;
@@ -48,11 +49,12 @@
             padding: 10px 0;
             text-align: center;
             z-index: 1000;
-            display: flex;
+            display: none; /* Initially hidden */
             justify-content: left;
             align-items: center;
             overflow-x: auto;
         }
+        
         nav a {
             color: #fff;
             text-decoration: none;
@@ -128,34 +130,18 @@
         <!-- Navigation links will be dynamically inserted here -->
         <a href="#" id="nav-1-100">1-100</a>
         <a href="#" id="nav-101-200">101-200</a>
-        <a href="#" id="nav-201-300">201-300</a>
-        <a href="#" id="nav-301-400">301-400</a>
-        <a href="#" id="nav-401-500">401-500</a>
-        <a href="#" id="nav-501-600">501-600</a>
-        <a href="#" id="nav-601-700">601-700</a>
-        <a href="#" id="nav-701-800">701-800</a>
-        <a href="#" id="nav-801-900">801-900</a>
-        <a href="#" id="nav-901-1000">901-1000</a>
-        <a href="#" id="nav-1001-1100">1001-1100</a>
-        <a href="#" id="nav-1101-1200">1101-1200</a>
-        <a href="#" id="nav-1201-1300">1201-1300</a>
-        <a href="#" id="nav-1301-1400">1301-1400</a>
-        <a href="#" id="nav-1401-1500">1401-1500</a>
-        <a href="#" id="nav-1501-1600">1501-1600</a>
-        <a href="#" id="nav-1601-1700">1601-1700</a>
-        <a href="#" id="nav-1701-1800">1701-1800</a>
-        <a href="#" id="nav-1801-1888">1801-1888</a>
+        <!-- Add other navigation links as needed -->
     </nav>
     <iframe id="web-viewer" title="Web Viewer"></iframe>
     <div id="login-container">
         <form>
             <div>
                 <label for="login_email">Email:</label>
-                <input type="email" id="login_email" required>
+                <input type="email" id="login_email" placeholder="Enter Your Email" required>
             </div>
             <div>
                 <label for="login_password">Password:</label>
-                <input type="password" id="login_password" required>
+                <input type="password" id="login_password" placeholder="Enter Your Password" required>
             </div>
             <button type="button" id="login">Login</button>
             <div id="message">Invalid login credentials. Please try again.</div>
@@ -164,6 +150,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -187,27 +175,31 @@
 
         // Function to handle UI based on authentication state
         function handleAuthState(isLoggedIn, user) {
-            const loginContainer = document.getElementById('login-container');
-            const webViewer = document.getElementById('web-viewer');
-            const userEmail = document.getElementById('user-email');
-            const logoutText = document.getElementById('logout-text');
-            const navigation = document.getElementById('navigation');
+    const loginContainer = document.getElementById('login-container');
+    const webViewer = document.getElementById('web-viewer');
+    const userEmail = document.getElementById('user-email');
+    const logoutText = document.getElementById('logout-text');
+    const navigation = document.getElementById('navigation');
 
-            if (isLoggedIn) {
-                loginContainer.style.display = 'none';
-                webViewer.style.display = 'block';
-                userEmail.textContent = user.email;
-                logoutText.style.display = 'block'; // Show logout text
-                renderNavigation();
-                loadWebView('https://amhpratik.github.io/medicine/welcome');
-            } else {
-                loginContainer.style.display = 'flex';
-                webViewer.style.display = 'none';
-                userEmail.textContent = '';
-                logoutText.style.display = 'none'; // Hide logout text
-                navigation.innerHTML = '';
-            }
-        }
+    if (isLoggedIn) {
+        loginContainer.style.display = 'none';
+        webViewer.style.display = 'block';
+        userEmail.textContent = user.email;
+        logoutText.style.display = 'block'; // Show logout text
+        navigation.style.display = 'flex'; // Show navigation bar
+        renderNavigation();
+        loadWebView('https://amhpratik.github.io/medicine/welcome');
+    } else {
+        loginContainer.style.display = 'flex';
+        webViewer.style.display = 'none';
+        userEmail.textContent = '';
+        logoutText.style.display = 'none'; // Hide logout text
+        navigation.style.display = 'none'; // Hide navigation bar
+        navigation.innerHTML = ''; // Clear navigation links
+    }
+}
+
+
 
         // Function to render the navigation menu based on login status
         function renderNavigation() {

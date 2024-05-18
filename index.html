@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single Page Application</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .user-info {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: #ddd;
+            padding: 10px 0;
+            text-align: center;
+            z-index: 1000; /* Ensures the user info is on top of other content */
+        }
+
+        .user-info span {
+            margin: 0 10px;
+        }
+
+        nav {
+    position: fixed;
+    top: 40px; /* Adjusted top position */
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+    z-index: 1000; /* Ensures the navigation is on top of other content */
+    display: flex;
+    justify-content: left; /* Center horizontally */
+    align-items: center;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    
+}
+
+
+        
+nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px; /* Adjusted margin */
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+
+        #web-viewer {
+            position: fixed;
+            top: 100px; /* Adjusted top position */
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 100px); /* Adjusted height */
+            border: none;
+        }
+
+        .logout-text {
+            color: white;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="user-info">
+        <a>Sixth Sem Exam Questions</a>
+        <span id="user-email"></span>
+        <span id="logout-text" class="logout-text">Logout</span>
+    </div>
+    <nav id="navigation">
+        <!-- Navigation links will be dynamically inserted here -->
+        <a href="#" id="nav-1-100">1-100</a>
+        <a href="#" id="nav-101-200">101-200</a>
+        <a href="#" id="nav-201-300">201-300</a>
+        <a href="#" id="nav-301-400">301-400</a>
+        <a href="#" id="nav-401-500">401-500</a>
+        <a href="#" id="nav-501-600">501-600</a>
+        <a href="#" id="nav-601-700">601-700</a>
+        <a href="#" id="nav-701-800">701-800</a>
+        <a href="#" id="nav-801-900">801-900</a>
+        <a href="#" id="nav-901-1000">901-1000</a>
+        <a href="#" id="nav-1001-1100">1001-1100</a>
+        <a href="#" id="nav-1101-1200">1101-1200</a>
+        <a href="#" id="nav-1201-1300">1201-1300</a>
+        <a href="#" id="nav-1301-1400">1301-1400</a>
+        <a href="#" id="nav-1401-1500">1401-1500</a>
+        <a href="#" id="nav-1501-1600">1501-1600</a>
+        <a href="#" id="nav-1601-1700">1601-1700</a>
+        <a href="#" id="nav-1701-1800">1701-1800</a>
+        <a href="#" id="nav-1801-1888">1801-1888</a>
+    </nav>
+    
+    <iframe id="web-viewer" title="Web Viewer"></iframe>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBP7lfDUc5wDe0IALcvQhb7E0-lJKMuSQ8",
+            authDomain: "start-io-d3acb.firebaseapp.com",
+            projectId: "start-io-d3acb",
+            storageBucket: "start-io-d3acb.appspot.com",
+            messagingSenderId: "683396002335",
+            appId: "1:683396002335:web:4686e3b128a3734e469b2a",
+            measurementId: "G-KQQEWR4SCP"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+
+        // Function to load content into the web viewer
+        function loadWebView(url) {
+            document.getElementById('web-viewer').src = url;
+        }
+
+        // Function to render the navigation menu based on login status
+        function renderNavigation() {
+            const navContainer = document.getElementById('navigation');
+            if (isLoggedIn) {
+                navContainer.innerHTML = `
+                    <a href="#" id="nav-1-100">1-100</a>
+                    <a href="#" id="nav-101-200">101-200</a>
+                    <a href="#" id="nav-201-300">201-300</a>
+                    <a href="#" id="nav-301-400">301-400</a>
+                    <a href="#" id="nav-401-500">401-500</a>
+                    <a href="#" id="nav-501-600">501-600</a>
+                    <a href="#" id="nav-601-700">601-700</a>
+                    <a href="#" id="nav-701-800">701-800</a>
+                    <a href="#" id="nav-801-900">801-900</a>
+                    <a href="#" id="nav-901-1000">901-1000</a>
+                    <a href="#" id="nav-1001-1100">1001-1100</a>
+                    <a href="#" id="nav-1101-1200">1101-1200</a>
+                    <a href="#" id="nav-1201-1300">1201-1300</a>
+                    <a href="#" id="nav-1301-1400">1301-1400</a>
+                    <a href="#" id="nav-1401-1500">1401-1500</a>
+                    <a href="#" id="nav-1501-1600">1501-1600</a>
+                    <a href="#" id="nav-1601-1700">1601-1700</a>
+                    <a href="#" id="nav-1701-1800">1701-1800</a>
+                    <a href="#" id="nav-1801-1888">1801-1888</a>
+                `;
+
+                document.getElementById('nav-1-100').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m1-100.html');
+                });
+                
+                document.getElementById('nav-101-200').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m101-200.html');
+                });
+
+                document.getElementById('nav-201-300').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m201-300.html');
+                });
+
+                document.getElementById('nav-301-400').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m301-400.html');
+                });
+
+                document.getElementById('nav-401-500').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m401-500.html');
+                });
+
+                document.getElementById('nav-501-600').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m501-600.html');
+                });
+
+                document.getElementById('nav-601-700').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m601-700.html');
+                });
+
+                document.getElementById('nav-701-800').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m701-800.html');
+                });
+
+                document.getElementById('nav-801-900').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m801-900.html');
+                });
+
+                document.getElementById('nav-901-1000').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m901-1000.html');
+                });
+
+                document.getElementById('nav-1001-1100').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m1001-1100.html');
+                });
+
+                document.getElementById('nav-1101-1200').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m1101-1200.html');
+                });
+
+                document.getElementById('nav-1201-1300').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m1201-1300.html');
+                });
+
+                document.getElementById('nav-1301-1400').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m1301-1400.html');
+                });
+
+                document.getElementById('nav-1401-1500').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m1401-1500.html');
+                });
+
+                document.getElementById('nav-1501-1600').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m1501-1600.html');
+                });
+
+                document.getElementById('nav-1601-1700').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m1601-1700.html');
+                });
+
+                document.getElementById('nav-1701-1800').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m1701-1800.html');
+                });
+
+                document.getElementById('nav-1801-1888').addEventListener('click', () => {
+                    loadWebView('https://amhpratik.github.io/sixthsem/m1801-1888.html');
+                });
+
+
+                // Add event listeners for other navigation items...
+
+                document.getElementById('logout-text').addEventListener('click', () => {
+                    signOut(auth)
+                        .then(() => {
+                            isLoggedIn = false;
+                            renderNavigation();
+                            loadWebView('');
+                        })
+                        .catch((error) => {
+                            console.error('Sign out error:', error);
+                        });
+                });
+
+                // Load default page on login
+                loadWebView('https://amhpratik.github.io/sixthsem/');
+            } else {
+                navContainer.innerHTML = `
+                    <a href="#" id="nav-home">Home</a>
+                `;
+
+                document.getElementById('nav-home').addEventListener('click', () => {
+                    loadWebView('');
+                });
+
+                // Load default page if not logged in
+                loadWebView('');
+            }
+        }
+
+        // Function to setup login form submission
+        function setupLogin() {
+            document.getElementById('login').addEventListener('click', function() {
+                var email = document.getElementById('login_email').value;
+                var password = document.getElementById('login_password').value;
+
+                signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    // Signed in
+                    isLoggedIn = true;
+                    renderNavigation();
+                })
+                .catch((error) => {
+                    const errorMessage = error.message;
+                    console.log(errorMessage);
+                    document.getElementById('message').style.display = 'block';
+                    setTimeout(() => {
+                        document.getElementById('message').style.display = 'none';
+                    }, 3000);
+                });
+            });
+        }
+
+        // Check user's authentication status on page load
+        let isLoggedIn = false;
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                isLoggedIn = true;
+                document.getElementById('user-email').textContent = user.email;
+            } else {
+                isLoggedIn = false;
+            }
+            renderNavigation();
+        });
+    </script>
+</body>
+</html>

@@ -1,1 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .additional-info {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #555;
+            text-align: center;
+        }
+        .thumb-emoji {
+            font-size: 24px;
+            margin-left: 5px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div id="container">
+    <h1>
+    <div id="welcome-message"></div></h1>
+
+    <div class="additional-info">
+        <p>Select The Set And Start The Practice.</p>
+        <p>Best of Luck<span class="thumb-emoji">👍</span></p>
+    </div>
+</div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBP7lfDUc5wDe0IALcvQhb7E0-lJKMuSQ8",
+            authDomain: "start-io-d3acb.firebaseapp.com",
+            projectId: "start-io-d3acb",
+            storageBucket: "start-io-d3acb.appspot.com",
+            messagingSenderId: "683396002335",
+            appId: "1:683396002335:web:4686e3b128a3734e469b2a",
+            measurementId: "G-KQQEWR4SCP"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+
+        // Function to display welcome message with username
+        function displayWelcomeMessage(user) {
+            const welcomeDiv = document.getElementById('welcome-message');
+            if (user) {
+                const email = user.email;
+                const username = email.substring(0, email.indexOf('@'));
+                welcomeDiv.textContent = `Welcome, ${username}!`;
+            } else {
+                welcomeDiv.textContent = 'Hello!';
+            }
+        }
+
+        // Check user's authentication status on page load
+        onAuthStateChanged(auth, (user) => {
+            displayWelcomeMessage(user);
+        });
+    </script>
+</body>
+</html>
 
